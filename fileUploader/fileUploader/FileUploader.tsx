@@ -168,12 +168,16 @@ export const FileUploader = (props: IFileUploaderProps) => {
   const getIcon = React.useCallback(() => {
     if (!actionIcon) return undefined;
     const iconName = `${actionIcon}`;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const IconComponent = (FluentIcons as any)[iconName];
     return IconComponent ? <IconComponent /> : undefined;
   }, [actionIcon]);
 
   const getFileIcon = React.useCallback((fileName: string) => {
-    const extension = fileName.split(".").pop()?.toLowerCase();
+    const extension: string | undefined = fileName
+      .split(".")
+      .pop()
+      ?.toLowerCase();
     switch (extension) {
       case "jpg":
       case "jpeg":

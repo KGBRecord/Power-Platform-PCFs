@@ -5,7 +5,17 @@ Uses the theming from your canvas app automatically.
 
 ![Screenshot FileUploader](../docs/images/screenshot_pcf.png)
 
-### Breaking Changes in v2.0.0
+# 🚀 Release Notes - v2.0.0 (April 2025)
+
+## New Features
+
+- **Upgraded to FluentUI v9**: Completely modernized UI with improved accessibility and performance
+- **Enhanced Drag & Drop**: Better visual feedback during drag operations
+- **File List Improvements**: Now shows file type icons and has better handling of long filenames
+- **Persistent File Selection**: Fixed issue where files array would reset when dragging new files
+- **Type-Safe Codebase**: Removed usage of `any` types for better reliability
+
+## Breaking Changes
 
 - Upgraded to FluentUI v9
 - Icon names must now follow FluentUI v9 naming convention. Please refer to the [FluentUI Icons Catalog](https://react.fluentui.dev/?path=/docs/icons-catalog--docs) for available icons.
@@ -15,6 +25,14 @@ Uses the theming from your canvas app automatically.
   - outline
   - subtle
   - transparent
+
+## Improvements
+
+- Better error handling for file operations
+- Optimized file reading process for improved performance
+- More consistent styling across different button types
+- Enhanced accessibility through FluentUI v9 components
+- Improved drag-and-drop zone with more responsive feedback
 
 ### How to get selected file data
 

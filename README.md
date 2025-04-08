@@ -16,6 +16,18 @@ A flexible file upload component with multiple interface options:
 
 ![File Uploader](docs/images/screenshot_pcf.png)
 
+#### 🚀 File Uploader v2.0 Release Notes (April 2025)
+
+- **Upgraded to FluentUI v9**: Modern design system with improved accessibility and performance
+- **Enhanced File State Management**: Fixed issue where files array would reset when dragging new files
+- **Improved Type Safety**: Removed usage of `any` types for better code quality and error prevention
+- **New Button Types**: Added support for secondary, outline, subtle, and transparent button styles
+- **Dynamic Icon Support**: Now using FluentUI v9 icon system with extensive icon library
+- **Refined Drag & Drop Experience**: Better visual feedback during drag operations
+- **Improved File Preview**: Enhanced preview system with appropriate icons for different file types
+- **Better Error Handling**: More robust error management for file operations
+- **Performance Optimizations**: Faster file processing with reduced memory usage
+
 ### 🃏 [Fluent Cards](fluentCards)
 
 Modern card components using Fluent UI design language for displaying information in a visually appealing way.
@@ -36,24 +48,16 @@ Custom scroll bar component for better scrolling experience in Power Apps.
 
 ```bash
 cd \Solutions
-msbuild /t:build /restore
+dotnet msbuild /t:build /restore
 ```
 
 ### Production Build
 
 ```bash
 cd \Solutions
-msbuild /p:configuration=Release
+dotnet msbuild /p:configuration=Release /restore
 ```
 
 ## Documentation
 
 For detailed information on working with PCF components, refer to the [official Microsoft documentation](https://learn.microsoft.com/en-us/power-apps/developer/component-framework/import-custom-controls).
-
-## License
-
-This project is licensed under the terms of the license included in the [LICENSE](LICENSE) file.
-
----
-
-_Note: The screenshot images are placeholders. Replace them with actual screenshots of your components._
