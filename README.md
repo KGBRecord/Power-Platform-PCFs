@@ -14,7 +14,7 @@ A flexible file upload component with multiple interface options:
 - File list with preview icons based on file type
 - Support for multiple file selection
 
-![File Uploader](docs/images/screenshot_pcf.png)
+![File Uploader](docs/images/screenshot_pcf4.png)
 
 #### 🚀 File Uploader v2.0 Release Notes (April 2025)
 
