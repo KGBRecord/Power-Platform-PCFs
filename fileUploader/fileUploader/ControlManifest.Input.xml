@@ -23,13 +23,15 @@
     <property name="allowedFormats" display-name-key="allowedFormats" description-key="Allowed formats" of-type="SingleLine.Text" usage="bound" required="false" default-value="all" />
     <property name="uploadId" display-name-key="uploadId" description-key="ID of the button" of-type="SingleLine.Text" usage="bound" required="true" default-value="xe-uploadfile-button" />
     <property name="buttonType" display-name-key="buttonType" description-key="Button type" of-type="SingleLine.Text" usage="bound" required="false" default-value="primary" />
-    <property name="actionIcon" display-name-key="actionIcon" description-key="Action icon name" of-type="SingleLine.Text" usage="bound" required="false" default-value="BulkUpload" />
+    <property name="actionIcon" display-name-key="actionIcon" description-key="Button icon name" of-type="SingleLine.Text" usage="bound" required="false" default-value="ArrowUploadRegular" />
+    <property name="iconPosition" display-name-key="iconPosition" description-key="Button icon position" of-type="SingleLine.Text" usage="bound" required="false" default-value="before" />
     <property name="files" display-name-key="Files" description-key="Selected Files" of-type="SingleLine.Text" usage="bound" />
     <property name="dropFilesText" display-name-key="dropFilesText" description-key="Text to show on dropzone" of-type="SingleLine.Text" usage="bound" required="true" default-value="Drop files or click to select files" />
     <property name="dropZoneBorderSize" display-name-key="dropZoneBorderSize" description-key="Dropzone border size" of-type="SingleLine.Text" usage="bound" required="true" default-value="1px" />
     <property name="dropZoneBorderColor" display-name-key="dropZoneBorderColor" description-key="Dropzone border color" of-type="SingleLine.Text" usage="bound" required="true" default-value="grey" />
     <property name="dropZoneTextColor" display-name-key="dropZoneTextColor" description-key="Dropzone text color" of-type="SingleLine.Text" usage="bound" required="true" default-value="black" />
     <property name="triggerReset" display-name-key="triggerReset" description-key="Reset files array by chaning the value" of-type="SingleLine.Text" usage="bound" required="true" default-value="0" />
+    <property name="showFileList" display-name-key="showFileList" description-key="Show list of selected files" of-type="TwoOptions" usage="bound" required="true" default-value="false" />
 
     <!--
       Property node's of-type attribute can be of-type-group attribute.
@@ -44,8 +46,8 @@
     -->
     <resources>
       <code path="index.ts" order="1"/>
-      <platform-library name="React" version="16.8.6" />
-      <platform-library name="Fluent" version="8.29.0" />
+      <platform-library name="React" version="16.14.0" />
+      <platform-library name="Fluent" version="9.46.2" />
       <!-- UNCOMMENT TO ADD MORE RESOURCES
       <css path="css/fileUploader.css" order="1" />
       <resx path="strings/fileUploader.1033.resx" version="1.0.0" />

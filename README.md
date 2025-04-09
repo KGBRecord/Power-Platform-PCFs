@@ -1,30 +1,63 @@
-## PCF's for Power Platform
+# Power Platform PCF Components
 
-This repository contains a collection of PCF components for the power platform.
+This repository contains a collection of high-quality Power Apps Component Framework (PCF) components designed to enhance your Power Platform applications with modern UI elements and advanced functionality.
 
-### Components
+## Components
 
-#### File Uploader
+### 📁 [File Uploader](fileUploader)
 
-A generic fluent UI button to trigger the native file selector. Outputs the selected files as data url.
-[Code & solution](fileUploader)
+A flexible file upload component with multiple interface options:
 
-### How to build the solution
+- Standard buttons (primary, secondary, outline, etc.)
+- Compound buttons with descriptive text
+- Drag-and-drop zone for intuitive file uploads
+- File list with preview icons based on file type
+- Support for multiple file selection
 
-Find latest microsoft guide on building PCF components [here](https://learn.microsoft.com/en-us/power-apps/developer/component-framework/import-custom-controls)
+![File Uploader](docs/images/screenshot_pcf.png)
 
-!
+#### 🚀 File Uploader v2.0 Release Notes (April 2025)
 
-#### DEV
+- **Upgraded to FluentUI v9**: Modern design system with improved accessibility and performance
+- **Enhanced File State Management**: Fixed issue where files array would reset when dragging new files
+- **Improved Type Safety**: Removed usage of `any` types for better code quality and error prevention
+- **New Button Types**: Added support for secondary, outline, subtle, and transparent button styles
+- **Dynamic Icon Support**: Now using FluentUI v9 icon system with extensive icon library
+- **Refined Drag & Drop Experience**: Better visual feedback during drag operations
+- **Improved File Preview**: Enhanced preview system with appropriate icons for different file types
+- **Better Error Handling**: More robust error management for file operations
+- **Performance Optimizations**: Faster file processing with reduced memory usage
 
-```
+### 🃏 [Fluent Cards](fluentCards)
+
+Modern card components using Fluent UI design language for displaying information in a visually appealing way.
+
+### 📜 [Scroll Bar](scrollBar)
+
+Custom scroll bar component for better scrolling experience in Power Apps.
+
+## How to Build
+
+### Prerequisites
+
+- Power Platform CLI
+- .NET SDK
+- Node.js and npm
+
+### Development Build
+
+```bash
 cd \Solutions
-msbuild /t:build /restore
+dotnet msbuild /t:build /restore
 ```
 
-#### Production
+### Production Build
 
-```
+```bash
 cd \Solutions
-msbuild /p:configuration=Release
+dotnet msbuild /p:configuration=Release /restore
 ```
+
+## Documentation
+
+For detailed information on working with PCF components, refer to the [official Microsoft documentation](https://learn.microsoft.com/en-us/power-apps/developer/component-framework/import-custom-controls).

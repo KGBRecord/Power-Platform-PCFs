@@ -1,10 +1,12 @@
-import { IInputs, IOutputs } from './generated/ManifestTypes';
-import { FileUploader, IFile, IFileUploaderProps } from './FileUploader';
-import * as React from 'react';
+import { IInputs, IOutputs } from "./generated/ManifestTypes";
+import { FileUploader, IFile, IFileUploaderProps } from "./FileUploader";
+import * as React from "react";
 
-export class fileuploader implements ComponentFramework.ReactControl<IInputs, IOutputs> {
+export class fileuploader
+  implements ComponentFramework.ReactControl<IInputs, IOutputs>
+{
   private notifyOutputChanged: () => void;
-  private _files: string = '';
+  private _files: string = "";
 
   /**
    * Empty constructor.
@@ -18,7 +20,11 @@ export class fileuploader implements ComponentFramework.ReactControl<IInputs, IO
    * @param notifyOutputChanged A callback method to alert the framework that the control has new outputs ready to be retrieved asynchronously.
    * @param state A piece of data that persists in one session for a single user. Can be set at any point in a controls life cycle by calling 'setControlState' in the Mode interface.
    */
-  public init(context: ComponentFramework.Context<IInputs>, notifyOutputChanged: () => void, state: ComponentFramework.Dictionary): void {
+  public init(
+    context: ComponentFramework.Context<IInputs>,
+    notifyOutputChanged: () => void,
+    state: ComponentFramework.Dictionary
+  ): void {
     this.notifyOutputChanged = notifyOutputChanged;
   }
 
@@ -27,7 +33,9 @@ export class fileuploader implements ComponentFramework.ReactControl<IInputs, IO
    * @param context The entire property bag available to control via Context Object; It contains values as set up by the customizer mapped to names defined in the manifest, as well as utility functions
    * @returns ReactElement root react element for the control
    */
-  public updateView(context: ComponentFramework.Context<IInputs>): React.ReactElement {
+  public updateView(
+    context: ComponentFramework.Context<IInputs>
+  ): React.ReactElement {
     const props: IFileUploaderProps = {
       stateChanged: this.notifyOutputChanged,
       files: (files: IFile[]) => {
@@ -44,6 +52,7 @@ export class fileuploader implements ComponentFramework.ReactControl<IInputs, IO
       dropZoneBorderColor: context.parameters.dropZoneBorderColor.raw,
       dropZoneBorderSize: context.parameters.dropZoneBorderSize.raw,
       resetFiles: context.parameters.triggerReset.raw,
+      showFileList: context.parameters.showFileList.raw,
     };
     return React.createElement(FileUploader, props);
   }

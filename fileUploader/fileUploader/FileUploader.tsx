@@ -1,11 +1,35 @@
-import * as React from 'react';
-import { ActionButton, CompoundButton, DefaultButton, IIconProps, PrimaryButton } from '@fluentui/react';
-import './style.css';
+import * as React from "react";
+import {
+  Button,
+  CompoundButton,
+  Card,
+  CardHeader,
+  Text,
+  tokens,
+  makeStyles,
+  shorthands,
+} from "@fluentui/react-components";
+import {
+  DocumentRegular,
+  ImageRegular,
+  VideoRegular,
+  MusicNote2Regular,
+  DocumentPdfRegular,
+  DeleteRegular,
+  ArrowUploadRegular,
+  // Add any additional icons you need here
+} from "@fluentui/react-icons";
 
 export interface IFile {
   name: string;
   file: string;
 }
+
+enum IconPostion {
+  after = "after",
+  before = "before",
+}
+
 export interface IFileUploaderProps {
   stateChanged: () => void;
   files: (files: IFile[]) => void;
@@ -15,14 +39,39 @@ export interface IFileUploaderProps {
   uploadId: string | null;
   buttonType: string | null;
   actionIcon: string | null;
+  iconPosition?: IconPostion;
   dropZoneText: string | null;
   dropZoneTextColor: string | null;
   dropZoneBorderColor: string | null;
   dropZoneBorderSize: string | null;
   resetFiles: string | null;
+  showFileList: boolean;
 }
 
+// Define styles using makeStyles
+const useStyles = makeStyles({
+  dropZone: {
+    display: "block",
+    textAlign: "center",
+    ...shorthands.padding("50px"),
+    ...shorthands.margin("auto"),
+    width: "90%",
+    height: "70%",
+    fontSize: "20px",
+    cursor: "pointer",
+    ...shorthands.transition("all", "0.2s"),
+    "&:hover": {
+      backgroundColor: tokens.colorNeutralBackgroundInverted,
+    },
+  },
+  isDragging: {
+    backgroundColor: tokens.colorNeutralBackgroundInverted,
+    ...shorthands.borderStyle("dashed"),
+  },
+});
+
 export const FileUploader = (props: IFileUploaderProps) => {
+  const styles = useStyles();
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [files, setFiles] = React.useState<IFile[]>([]);
   const {
@@ -32,11 +81,13 @@ export const FileUploader = (props: IFileUploaderProps) => {
     uploadId,
     buttonType,
     actionIcon,
+    iconPosition,
     dropZoneText,
     dropZoneBorderColor,
     dropZoneBorderSize,
     dropZoneTextColor,
     resetFiles,
+    showFileList,
   } = props;
   const [isDragging, setIsDragging] = React.useState<boolean>(false);
 
@@ -54,23 +105,20 @@ export const FileUploader = (props: IFileUploaderProps) => {
     props.files(files);
     props.stateChanged();
   }, [files]);
+  const readFiles = React.useCallback((arrayFiles: File[]) => {
+    arrayFiles.forEach((file) => {
+      const fileReader = new FileReader();
 
-  const readFiles = React.useCallback(
-    (arrayFiles: File[]) => {
-      const fileArray: IFile[] = [];
-
-      arrayFiles.map(async (file) => {
-        const fileReader = new FileReader();
-
-        fileReader.onloadend = () => {
-          fileArray.push({ name: file.name, file: fileReader.result as string });
-          setFiles([...files, ...fileArray]);
+      fileReader.onloadend = () => {
+        const newFile = {
+          name: file.name,
+          file: fileReader.result as string,
         };
-        fileReader.readAsDataURL(file);
-      });
-    },
-    [files]
-  );
+        setFiles((prevFiles) => [...prevFiles, newFile]);
+      };
+      fileReader.readAsDataURL(file);
+    });
+  }, []);
 
   const fileChanged = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,8 +130,6 @@ export const FileUploader = (props: IFileUploaderProps) => {
     [files]
   );
 
-  const actionIconObject: IIconProps = { iconName: actionIcon ? actionIcon : 'BulkUpload' };
-
   const onDrop = React.useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     if (e.dataTransfer.files) {
@@ -91,62 +137,192 @@ export const FileUploader = (props: IFileUploaderProps) => {
       readFiles(arrayFiles);
     }
   }, []);
-
   const onDragOver = React.useCallback(
-    (e) => {
+    (e: React.DragEvent<HTMLDivElement>) => {
       e.preventDefault();
+      e.stopPropagation();
+      setIsDragging(true);
+    },
+    [setIsDragging]
+  );
 
+  const onDragEnter = React.useCallback(
+    (e: React.DragEvent<HTMLDivElement>) => {
+      e.preventDefault();
+      e.stopPropagation();
       setIsDragging(true);
     },
     [setIsDragging]
   );
 
   const onDragEnd = React.useCallback(
-    (e) => {
+    (e: React.DragEvent<HTMLDivElement>) => {
       e.preventDefault();
+      e.stopPropagation();
       setIsDragging(false);
     },
     [setIsDragging]
   );
+  const getIcon = React.useCallback(() => {
+    if (!actionIcon) return undefined;
+
+    // Use a switch statement for specific icons instead of dynamic imports
+    switch (actionIcon) {
+      case "ArrowUploadRegular":
+        return <ArrowUploadRegular />;
+      case "DocumentRegular":
+        return <DocumentRegular />;
+      case "ImageRegular":
+        return <ImageRegular />;
+      case "VideoRegular":
+        return <VideoRegular />;
+      case "MusicNote2Regular":
+        return <MusicNote2Regular />;
+      case "DocumentPdfRegular":
+        return <DocumentPdfRegular />;
+      case "DeleteRegular":
+        return <DeleteRegular />;
+      // Add cases for any other icons you need
+      default:
+        return undefined;
+    }
+  }, [actionIcon]);
+
+  const getFileIcon = React.useCallback((fileName: string) => {
+    const extension: string | undefined = fileName
+      .split(".")
+      .pop()
+      ?.toLowerCase();
+    switch (extension) {
+      case "jpg":
+      case "jpeg":
+      case "png":
+      case "gif":
+      case "bmp":
+        return <ImageRegular />;
+      case "mp4":
+      case "mov":
+      case "avi":
+      case "wmv":
+        return <VideoRegular />;
+      case "mp3":
+      case "wav":
+      case "ogg":
+        return <MusicNote2Regular />;
+      case "pdf":
+        return <DocumentPdfRegular />;
+      default:
+        return <DocumentRegular />;
+    }
+  }, []);
+
+  const removeFile = React.useCallback((indexToRemove: number) => {
+    setFiles((currentFiles) => {
+      const newFiles = [...currentFiles];
+      newFiles.splice(indexToRemove, 1);
+      return newFiles;
+    });
+  }, []);
 
   return (
     <>
-      {buttonType === 'primary' && <PrimaryButton onClick={triggerUpload}>{label}</PrimaryButton>}
-      {buttonType === 'compound' && <CompoundButton onClick={triggerUpload}>{label}</CompoundButton>}
-      {buttonType === 'standard' && <DefaultButton onClick={triggerUpload}>{label}</DefaultButton>}
-      {buttonType === 'action' && (
-        <ActionButton
-          iconProps={actionIconObject}
-          onClick={triggerUpload}
-        >
-          {label}
-        </ActionButton>
-      )}
-      {buttonType === 'dragdrop' && (
-        <>
-          {isDragging}
-          <div
+      <div style={{ display: "flex", flex: "0 0 100%" }}>
+        {(buttonType === "primary" ||
+          buttonType === "transparent" ||
+          buttonType === "outline" ||
+          buttonType === "secondary" ||
+          buttonType === "subtle") && (
+          <Button
+            icon={getIcon()}
+            onClick={triggerUpload}
+            appearance={buttonType}
+            iconPosition={iconPosition}
+          >
+            {label}
+          </Button>
+        )}
+        {buttonType === "compound" && (
+          <CompoundButton
+            icon={getIcon()}
+            onClick={triggerUpload}
+            iconPosition={iconPosition}
+          >
+            {label}
+          </CompoundButton>
+        )}{" "}
+        {buttonType === "dragdrop" && (
+          <Card
+            onClick={triggerUpload}
             onDrop={onDrop}
             onDragOver={onDragOver}
+            onDragEnter={onDragEnter}
             onDragLeave={onDragEnd}
-            onClick={triggerUpload}
-            className={`dropzone ${isDragging ? 'is-dragging' : 'not-dragging'}`}
-            style={{ borderWidth: dropZoneBorderSize!, borderColor: dropZoneBorderColor!, color: dropZoneTextColor! }}
+            className={isDragging ? styles.isDragging : styles.dropZone}
+            style={{
+              borderWidth: dropZoneBorderSize!,
+              borderColor: dropZoneBorderColor!,
+              color: dropZoneTextColor!,
+              borderStyle: "dashed",
+            }}
           >
-            {dropZoneText}
-          </div>
-        </>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "8px",
+              }}
+            >
+              <ArrowUploadRegular />
+              <Text>{dropZoneText}</Text>
+            </div>
+          </Card>
+        )}
+      </div>
+      {showFileList && files.length > 0 && (
+        <div style={{ marginTop: "10px", display: "flex", flex: "0 0 100%" }}>
+          <Card>
+            <CardHeader
+              header={<Text weight='semibold'>Selected Files</Text>}
+            />
+            {files.map((file, index) => (
+              <div
+                key={index}
+                style={{
+                  padding: "8px 16px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
+                }}
+              >
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
+                >
+                  {getFileIcon(file.name)}
+                  <Text>{file.name}</Text>
+                </div>
+                <Button
+                  icon={<DeleteRegular />}
+                  appearance='subtle'
+                  onClick={() => removeFile(index)}
+                  aria-label='Remove file'
+                />
+              </div>
+            ))}
+          </Card>
+        </div>
       )}
       <input
         type='file'
-        id={uploadId ? uploadId : 'xe-fileupload-button'}
+        id={uploadId ? uploadId : "xe-fileupload-button"}
         value=''
         multiple={multiple}
         ref={inputRef}
-        accept={accepts ? accepts : ''}
+        accept={accepts ? accepts : ""}
         onChange={fileChanged}
         style={{
-          display: 'none',
+          display: "none",
         }}
       />
     </>
