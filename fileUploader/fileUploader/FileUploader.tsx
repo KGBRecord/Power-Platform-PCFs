@@ -2,7 +2,6 @@ import * as React from "react";
 import {
   Button,
   CompoundButton,
-  FluentProvider,
   Card,
   CardHeader,
   Text,
@@ -10,7 +9,6 @@ import {
   makeStyles,
   shorthands,
 } from "@fluentui/react-components";
-import * as FluentIcons from "@fluentui/react-icons";
 import {
   DocumentRegular,
   ImageRegular,
@@ -19,6 +17,7 @@ import {
   DocumentPdfRegular,
   DeleteRegular,
   ArrowUploadRegular,
+  // Add any additional icons you need here
 } from "@fluentui/react-icons";
 
 export interface IFile {
@@ -164,13 +163,29 @@ export const FileUploader = (props: IFileUploaderProps) => {
     },
     [setIsDragging]
   );
-
   const getIcon = React.useCallback(() => {
     if (!actionIcon) return undefined;
-    const iconName = `${actionIcon}`;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const IconComponent = (FluentIcons as any)[iconName];
-    return IconComponent ? <IconComponent /> : undefined;
+
+    // Use a switch statement for specific icons instead of dynamic imports
+    switch (actionIcon) {
+      case "ArrowUploadRegular":
+        return <ArrowUploadRegular />;
+      case "DocumentRegular":
+        return <DocumentRegular />;
+      case "ImageRegular":
+        return <ImageRegular />;
+      case "VideoRegular":
+        return <VideoRegular />;
+      case "MusicNote2Regular":
+        return <MusicNote2Regular />;
+      case "DocumentPdfRegular":
+        return <DocumentPdfRegular />;
+      case "DeleteRegular":
+        return <DeleteRegular />;
+      // Add cases for any other icons you need
+      default:
+        return undefined;
+    }
   }, [actionIcon]);
 
   const getFileIcon = React.useCallback((fileName: string) => {
@@ -210,87 +225,93 @@ export const FileUploader = (props: IFileUploaderProps) => {
   }, []);
 
   return (
-    <FluentProvider>
-      {(buttonType === "primary" ||
-        buttonType === "transparent" ||
-        buttonType === "outline" ||
-        buttonType === "secondary" ||
-        buttonType === "subtle") && (
-        <Button
-          icon={getIcon()}
-          onClick={triggerUpload}
-          appearance={buttonType}
-          iconPosition={iconPosition}
-        >
-          {label}
-        </Button>
-      )}
-      {buttonType === "compound" && (
-        <CompoundButton
-          icon={getIcon()}
-          onClick={triggerUpload}
-          iconPosition={iconPosition}
-        >
-          {label}
-        </CompoundButton>
-      )}{" "}
-      {buttonType === "dragdrop" && (
-        <Card
-          onClick={triggerUpload}
-          onDrop={onDrop}
-          onDragOver={onDragOver}
-          onDragEnter={onDragEnter}
-          onDragLeave={onDragEnd}
-          className={isDragging ? styles.isDragging : styles.dropZone}
-          style={{
-            borderWidth: dropZoneBorderSize!,
-            borderColor: dropZoneBorderColor!,
-            color: dropZoneTextColor!,
-            borderStyle: "dashed",
-          }}
-        >
-          <div
+    <>
+      <div style={{ display: "flex", flex: "0 0 100%" }}>
+        {(buttonType === "primary" ||
+          buttonType === "transparent" ||
+          buttonType === "outline" ||
+          buttonType === "secondary" ||
+          buttonType === "subtle") && (
+          <Button
+            icon={getIcon()}
+            onClick={triggerUpload}
+            appearance={buttonType}
+            iconPosition={iconPosition}
+          >
+            {label}
+          </Button>
+        )}
+        {buttonType === "compound" && (
+          <CompoundButton
+            icon={getIcon()}
+            onClick={triggerUpload}
+            iconPosition={iconPosition}
+          >
+            {label}
+          </CompoundButton>
+        )}{" "}
+        {buttonType === "dragdrop" && (
+          <Card
+            onClick={triggerUpload}
+            onDrop={onDrop}
+            onDragOver={onDragOver}
+            onDragEnter={onDragEnter}
+            onDragLeave={onDragEnd}
+            className={isDragging ? styles.isDragging : styles.dropZone}
             style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "8px",
+              borderWidth: dropZoneBorderSize!,
+              borderColor: dropZoneBorderColor!,
+              color: dropZoneTextColor!,
+              borderStyle: "dashed",
             }}
           >
-            <ArrowUploadRegular />
-            <Text>{dropZoneText}</Text>
-          </div>
-        </Card>
-      )}
-      {showFileList && files.length > 0 && (
-        <Card style={{ marginTop: "10px" }}>
-          <CardHeader header={<Text weight='semibold'>Selected Files</Text>} />
-          {files.map((file, index) => (
             <div
-              key={index}
               style={{
-                padding: "8px 16px",
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "space-between",
-                borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
+                justifyContent: "center",
+                gap: "8px",
               }}
             >
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "8px" }}
-              >
-                {getFileIcon(file.name)}
-                <Text>{file.name}</Text>
-              </div>
-              <Button
-                icon={<DeleteRegular />}
-                appearance='subtle'
-                onClick={() => removeFile(index)}
-                aria-label='Remove file'
-              />
+              <ArrowUploadRegular />
+              <Text>{dropZoneText}</Text>
             </div>
-          ))}
-        </Card>
+          </Card>
+        )}
+      </div>
+      {showFileList && files.length > 0 && (
+        <div style={{ marginTop: "10px", display: "flex", flex: "0 0 100%" }}>
+          <Card>
+            <CardHeader
+              header={<Text weight='semibold'>Selected Files</Text>}
+            />
+            {files.map((file, index) => (
+              <div
+                key={index}
+                style={{
+                  padding: "8px 16px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
+                }}
+              >
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
+                >
+                  {getFileIcon(file.name)}
+                  <Text>{file.name}</Text>
+                </div>
+                <Button
+                  icon={<DeleteRegular />}
+                  appearance='subtle'
+                  onClick={() => removeFile(index)}
+                  aria-label='Remove file'
+                />
+              </div>
+            ))}
+          </Card>
+        </div>
       )}
       <input
         type='file'
@@ -304,6 +325,6 @@ export const FileUploader = (props: IFileUploaderProps) => {
           display: "none",
         }}
       />
-    </FluentProvider>
+    </>
   );
 };

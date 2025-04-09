@@ -11,6 +11,7 @@
     <Name>fileUploader</Name>
     <ProjectGuid>2d1851fa-d78a-4cae-95b2-8cbb68f53671</ProjectGuid>
     <OutputPath>$(MSBuildThisFileDirectory)out\controls</OutputPath>
+    <PcfBuildMode>production</PcfBuildMode>
   </PropertyGroup>
 
   <PropertyGroup>

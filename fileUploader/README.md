@@ -3,7 +3,7 @@
 A generic Fluent UI v9 button to trigger the native file selector. Outputs the selected files as data url.
 Uses the theming from your canvas app automatically.
 
-![Screenshot FileUploader](../docs/images/screenshot_pcf.png)
+![Screenshot FileUploader](../docs/images/screenshot_pcf4.png)
 
 # 🚀 Release Notes - v2.0.0 (April 2025)
 
@@ -11,7 +11,8 @@ Uses the theming from your canvas app automatically.
 
 - **Upgraded to FluentUI v9**: Completely modernized UI with improved accessibility and performance
 - **Enhanced Drag & Drop**: Better visual feedback during drag operations
-- **File List Improvements**: Now shows file type icons and has better handling of long filenames
+- **File List Improvements (preview)**: Now shows file type icons and has better handling of long filenames
+- **Trigger Reset parameter**: Fixed issue on trigger reset. Files are now cleared when value is changed.
 - **Persistent File Selection**: Fixed issue where files array would reset when dragging new files
 - **Type-Safe Codebase**: Removed usage of `any` types for better reliability
 
@@ -56,6 +57,11 @@ ForAll(
 )
 ;;
 ```
+
+### The component adapts to the canvas app & model driven app theme
+
+![Theme 1](../docs/images/adapt_theme1.png)
+![Theme 2](../docs/images/adapt_theme2.png)
 
 ### Parameters
 
@@ -111,9 +117,17 @@ Available types:
 #### Action icon
 
 Can be used in combination with any button type.
-Refer to the [FluentUI Icons Catalog](https://react.fluentui.dev/?path=/docs/icons-catalog--docs) for available icons.
+For performance optimization reasons, only a limited set of icons is currently supported:
 
-**Breaking Change in v2**: Icons must use the FluentUI v9 naming convention.
+- ArrowUploadRegular
+- DocumentRegular
+- ImageRegular
+- VideoRegular
+- MusicNote2Regular
+- DocumentPdfRegular
+- DeleteRegular
+
+**Breaking Change in v2**: Icons must use the FluentUI v9 naming convention. If you need additional icons, you'll need to modify the component code to include them.
 
 > Default = "ArrowUploadRegular"
 
@@ -124,11 +138,11 @@ Can be any type of value (string, boolean, number) - changing the value is what 
 
 > Default = "0"
 
-#### showFileList
+#### showFileList (Preview)
 
 Show or hide the filelist overview
 
-> Default = True
+> Default = False
 
 #### Dropzone settings
 
