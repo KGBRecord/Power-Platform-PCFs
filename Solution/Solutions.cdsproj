@@ -51,7 +51,7 @@
   <ItemGroup>
     <ProjectReference Include="..\fileUploader\fileUploader.pcfproj" />
     <ProjectReference Include="..\fluentCards\fluentCards.pcfproj" />
-    <ProjectReference Include="..\scrollbar\scrollbar.pcfproj" />
+    <ProjectReference Include="..\scrollBar\scrollbar.pcfproj" />
   </ItemGroup>
 
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
