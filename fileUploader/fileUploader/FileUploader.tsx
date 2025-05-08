@@ -285,31 +285,37 @@ export const FileUploader = (props: IFileUploaderProps) => {
             <CardHeader
               header={<Text weight='semibold'>Selected Files</Text>}
             />
-            {files.map((file, index) => (
-              <div
-                key={index}
+            <div
                 style={{
-                  padding: "8px 16px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
+                  overflow: "auto",
                 }}
-              >
-                <div
-                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
-                >
-                  {getFileIcon(file.name)}
-                  <Text>{file.name}</Text>
-                </div>
-                <Button
-                  icon={<DeleteRegular />}
-                  appearance='subtle'
-                  onClick={() => removeFile(index)}
-                  aria-label='Remove file'
-                />
-              </div>
-            ))}
+            >
+              {files.map((file, index) => (
+                  <div
+                      key={index}
+                      style={{
+                        padding: "8px 16px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
+                      }}
+                  >
+                    <div
+                        style={{ display: "flex", alignItems: "center", gap: "8px" }}
+                    >
+                      {getFileIcon(file.name)}
+                      <Text>{file.name}</Text>
+                    </div>
+                    <Button
+                        icon={<DeleteRegular />}
+                        appearance='subtle'
+                        onClick={() => removeFile(index)}
+                        aria-label='Remove file'
+                    />
+                  </div>
+              ))}
+            </div>
           </Card>
         </div>
       )}
