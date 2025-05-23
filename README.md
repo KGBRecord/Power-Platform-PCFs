@@ -47,14 +47,14 @@ Custom scroll bar component for better scrolling experience in Power Apps.
 ### Development Build
 
 ```bash
-cd \Solutions
+cd \Solution
 dotnet msbuild /t:build /restore
 ```
 
 ### Production Build
 
 ```bash
-cd \Solutions
+cd \Solution
 dotnet msbuild /p:configuration=Release /restore
 ```
 
