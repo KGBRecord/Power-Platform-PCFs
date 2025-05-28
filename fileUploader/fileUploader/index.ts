@@ -42,6 +42,8 @@ export class fileuploader
         this._files = JSON.stringify(files);
       },
       label: context.parameters.labelButton.raw,
+      buttonColor: context.parameters.buttonColor.raw,
+      buttonTextColor: context.parameters.buttonTextColor.raw,
       multiple: context.parameters.multiple.raw,
       accepts: context.parameters.allowedFormats.raw,
       uploadId: context.parameters.uploadId.raw,

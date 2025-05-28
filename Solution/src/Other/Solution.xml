@@ -13,19 +13,19 @@
     <Managed>2</Managed>
     <Publisher>
       <!-- Unique Publisher Name of Cds Solution -->
-      <UniqueName>TimVanOnckelen</UniqueName>
+      <UniqueName>KGBRecord</UniqueName>
       <LocalizedNames>
         <!-- Localized Cds Publisher Name in language code-->
-        <LocalizedName description="TimVanOnckelen" languagecode="1033" />
+        <LocalizedName description="KGBRecord" languagecode="1033" />
       </LocalizedNames>
       <Descriptions>
         <!-- Description of Cds Publisher in language code -->
-        <Description description="TimVanOnckelen" languagecode="1033" />
+        <Description description="KGBRecord" languagecode="1033" />
       </Descriptions>
       <EMailAddress xsi:nil="true"></EMailAddress>
       <SupportingWebsiteUrl xsi:nil="true"></SupportingWebsiteUrl>
       <!-- Customization Prefix for the Cds Publisher-->
-      <CustomizationPrefix>xe</CustomizationPrefix>
+      <CustomizationPrefix>pcfs</CustomizationPrefix>
       <!-- Derived Option Value Prefix for the Customization Prefix of Cds Publisher -->
       <CustomizationOptionValuePrefix>78527</CustomizationOptionValuePrefix>
       <Addresses>

@@ -34,6 +34,8 @@ export interface IFileUploaderProps {
   stateChanged: () => void;
   files: (files: IFile[]) => void;
   label: string | null;
+  buttonColor: string|null;
+  buttonTextColor: string|null;
   multiple: boolean;
   accepts: string | null;
   uploadId: string | null;
@@ -76,6 +78,8 @@ export const FileUploader = (props: IFileUploaderProps) => {
   const [files, setFiles] = React.useState<IFile[]>([]);
   const {
     label,
+    buttonColor,
+    buttonTextColor,
     multiple,
     accepts,
     uploadId,
@@ -232,20 +236,30 @@ export const FileUploader = (props: IFileUploaderProps) => {
           buttonType === "outline" ||
           buttonType === "secondary" ||
           buttonType === "subtle") && (
-          <Button
-            icon={getIcon()}
-            onClick={triggerUpload}
-            appearance={buttonType}
-            iconPosition={iconPosition}
-          >
-            {label}
-          </Button>
+            <Button
+              icon={getIcon()}
+              onClick={triggerUpload}
+              appearance={buttonType}
+              iconPosition={iconPosition}
+              style={{
+                width: "100%",           
+                backgroundColor: buttonColor || "#0078D4", 
+                color: buttonTextColor || "white",
+              }}
+              >
+              {label}
+            </Button>
         )}
         {buttonType === "compound" && (
           <CompoundButton
             icon={getIcon()}
             onClick={triggerUpload}
             iconPosition={iconPosition}
+            style={{
+              width: "100%",
+              backgroundColor: buttonColor || "#0078D4",
+              color: buttonTextColor || "white",
+            }}
           >
             {label}
           </CompoundButton>
