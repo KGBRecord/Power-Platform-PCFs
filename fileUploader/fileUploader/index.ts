@@ -55,6 +55,11 @@ export class fileuploader
       dropZoneBorderSize: context.parameters.dropZoneBorderSize.raw,
       resetFiles: context.parameters.triggerReset.raw,
       showFileList: context.parameters.showFileList.raw,
+      buttonWidth: context.parameters.buttonWidth.raw,
+      buttonHeight: context.parameters.buttonHeight.raw,
+      fileListWidth: context.parameters.fileListWidth.raw,
+      fileListHeight: context.parameters.fileListHeight.raw,
+      fileListPosition: context.parameters.fileListPosition.raw,
     };
     return React.createElement(FileUploader, props);
   }

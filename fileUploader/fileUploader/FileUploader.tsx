@@ -48,11 +48,11 @@ export interface IFileUploaderProps {
   resetFiles: string | null;
   showFileList: boolean;
 
-  // NEW props for independent layout control
-  buttonWidth?: string;
-  buttonHeight?: string;
-  fileListWidth?: string;
-  fileListHeight?: string;
+  buttonWidth?: string|null;
+  buttonHeight?: string|null;
+  fileListWidth?: string|null;
+  fileListHeight?: string|null;
+  fileListPosition?: string|null;
 }
 
 const useStyles = makeStyles({
@@ -99,12 +99,12 @@ export const FileUploader = (props: IFileUploaderProps) => {
     buttonHeight,
     fileListWidth,
     fileListHeight,
+    fileListPosition = "bottom",
   } = props;
+
   const [isDragging, setIsDragging] = React.useState<boolean>(false);
 
-  const triggerUpload = () => {
-    inputRef.current?.click();
-  };
+  const triggerUpload = () => inputRef.current?.click();
 
   React.useEffect(() => {
     setFiles([]);
@@ -117,14 +117,11 @@ export const FileUploader = (props: IFileUploaderProps) => {
 
   const readFiles = (arrayFiles: File[]) => {
     arrayFiles.forEach((file) => {
-      const fileReader = new FileReader();
-      fileReader.onloadend = () => {
-        setFiles((prev) => [
-          ...prev,
-          { name: file.name, file: fileReader.result as string },
-        ]);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFiles((prev) => [...prev, { name: file.name, file: reader.result as string }]);
       };
-      fileReader.readAsDataURL(file);
+      reader.readAsDataURL(file);
     });
   };
 
@@ -132,29 +129,6 @@ export const FileUploader = (props: IFileUploaderProps) => {
     if (e.target.files) {
       readFiles(Array.from(e.target.files));
     }
-  };
-
-  const onDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    readFiles(Array.from(e.dataTransfer.files));
-  };
-
-  const onDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(true);
-  };
-
-  const onDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(true);
-  };
-
-  const onDragEnd = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(false);
   };
 
   const getIcon = () => {
@@ -170,28 +144,14 @@ export const FileUploader = (props: IFileUploaderProps) => {
     }
   };
 
-  const getFileIcon = (fileName: string) => {
-    const ext = fileName.split(".").pop()?.toLowerCase();
+  const getFileIcon = (name: string) => {
+    const ext = name.split(".").pop()?.toLowerCase();
     switch (ext) {
-      case "jpg":
-      case "jpeg":
-      case "png":
-      case "gif":
-      case "bmp":
-        return <ImageRegular />;
-      case "mp4":
-      case "mov":
-      case "avi":
-      case "wmv":
-        return <VideoRegular />;
-      case "mp3":
-      case "wav":
-      case "ogg":
-        return <MusicNote2Regular />;
-      case "pdf":
-        return <DocumentPdfRegular />;
-      default:
-        return <DocumentRegular />;
+      case "jpg": case "jpeg": case "png": case "gif": case "bmp": return <ImageRegular />;
+      case "mp4": case "mov": case "avi": return <VideoRegular />;
+      case "mp3": case "wav": return <MusicNote2Regular />;
+      case "pdf": return <DocumentPdfRegular />;
+      default: return <DocumentRegular />;
     }
   };
 
@@ -199,8 +159,15 @@ export const FileUploader = (props: IFileUploaderProps) => {
     setFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
+  const isHorizontal = fileListPosition === "left" || fileListPosition === "right";
+  const flexDirection =
+    fileListPosition === "top" ? "column-reverse"
+    : fileListPosition === "bottom" ? "column"
+    : fileListPosition === "left" ? "row-reverse"
+    : "row";
+
   return (
-    <div style={{ display: "flex", flexDirection: "column", width: "100%", height: "100%" }}>
+    <div style={{ display: "flex", flexDirection, width: "100%", height: "100%", gap: "8px" }}>
       <div style={{ width: buttonWidth || "100%", height: buttonHeight || "50px" }}>
         {["primary", "transparent", "outline", "secondary", "subtle"].includes(buttonType || "") && (
           <Button
@@ -218,6 +185,7 @@ export const FileUploader = (props: IFileUploaderProps) => {
             {label}
           </Button>
         )}
+
         {buttonType === "compound" && (
           <CompoundButton
             icon={getIcon()}
@@ -233,18 +201,22 @@ export const FileUploader = (props: IFileUploaderProps) => {
             {label}
           </CompoundButton>
         )}
+
         {buttonType === "dragdrop" && (
           <Card
             onClick={triggerUpload}
-            onDrop={onDrop}
-            onDragOver={onDragOver}
-            onDragEnter={onDragEnter}
-            onDragLeave={onDragEnd}
+            onDrop={(e) => {
+              e.preventDefault();
+              readFiles(Array.from(e.dataTransfer.files));
+            }}
+            onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+            onDragEnter={(e) => { e.preventDefault(); setIsDragging(true); }}
+            onDragLeave={(e) => { e.preventDefault(); setIsDragging(false); }}
             className={isDragging ? styles.isDragging : styles.dropZone}
             style={{
-              borderWidth: dropZoneBorderSize!,
-              borderColor: dropZoneBorderColor!,
-              color: dropZoneTextColor!,
+              borderWidth: dropZoneBorderSize || "1px",
+              borderColor: dropZoneBorderColor || "gray",
+              color: dropZoneTextColor || "black",
               borderStyle: "dashed",
             }}
           >
@@ -259,39 +231,35 @@ export const FileUploader = (props: IFileUploaderProps) => {
       {showFileList && files.length > 0 && (
         <div
           style={{
-            width: fileListWidth || "100%",
-            height: fileListHeight || "300px",
-            marginTop: "10px",
+            width: isHorizontal ? fileListWidth || "300px" : "100%",
+            height: isHorizontal ? "100%" : fileListHeight || "300px",
             overflow: "auto",
           }}
         >
           <Card>
             <CardHeader header={<Text weight="semibold">Selected Files</Text>} />
-            <div>
-              {files.map((file, index) => (
-                <div
-                  key={index}
-                  style={{
-                    padding: "8px 16px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
-                  }}
-                >
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    {getFileIcon(file.name)}
-                    <Text>{file.name}</Text>
-                  </div>
-                  <Button
-                    icon={<DeleteRegular />}
-                    appearance="subtle"
-                    onClick={() => removeFile(index)}
-                    aria-label="Remove file"
-                  />
+            {files.map((file, index) => (
+              <div
+                key={index}
+                style={{
+                  padding: "8px 16px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                  {getFileIcon(file.name)}
+                  <Text>{file.name}</Text>
                 </div>
-              ))}
-            </div>
+                <Button
+                  icon={<DeleteRegular />}
+                  appearance="subtle"
+                  onClick={() => removeFile(index)}
+                />
+              </div>
+            ))}
           </Card>
         </div>
       )}

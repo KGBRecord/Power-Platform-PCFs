@@ -38,6 +38,7 @@
     <property name="buttonHeight" display-name-key="buttonHeight" description-key="Height of the upload button" of-type="SingleLine.Text" usage="bound" required="false" default-value="50px" />
     <property name="fileListWidth" display-name-key="fileListWidth" description-key="Width of the file list" of-type="SingleLine.Text" usage="bound" required="false" default-value="100%" />
     <property name="fileListHeight" display-name-key="fileListHeight" description-key="Height of the file list" of-type="SingleLine.Text" usage="bound" required="false" default-value="300px" />
+    <property name="fileListPosition" display-name-key="fileListPosition" description-key="Position of file list view (top, bottom, left, right)" of-type="SingleLine.Text" usage="bound" required="false" default-value="bottom" />
 
     <!--
       Property node's of-type attribute can be of-type-group attribute.
