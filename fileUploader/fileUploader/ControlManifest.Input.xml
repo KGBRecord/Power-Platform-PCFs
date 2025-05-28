@@ -34,6 +34,10 @@
     <property name="dropZoneTextColor" display-name-key="dropZoneTextColor" description-key="Dropzone text color" of-type="SingleLine.Text" usage="bound" required="true" default-value="black" />
     <property name="triggerReset" display-name-key="triggerReset" description-key="Reset files array by chaning the value" of-type="SingleLine.Text" usage="bound" required="true" default-value="0" />
     <property name="showFileList" display-name-key="showFileList" description-key="Show list of selected files" of-type="TwoOptions" usage="bound" required="true" default-value="false" />
+    <property name="buttonWidth" display-name-key="buttonWidth" description-key="Width of the upload button" of-type="SingleLine.Text" usage="bound" required="false" default-value="100%" />
+    <property name="buttonHeight" display-name-key="buttonHeight" description-key="Height of the upload button" of-type="SingleLine.Text" usage="bound" required="false" default-value="50px" />
+    <property name="fileListWidth" display-name-key="fileListWidth" description-key="Width of the file list" of-type="SingleLine.Text" usage="bound" required="false" default-value="100%" />
+    <property name="fileListHeight" display-name-key="fileListHeight" description-key="Height of the file list" of-type="SingleLine.Text" usage="bound" required="false" default-value="300px" />
 
     <!--
       Property node's of-type attribute can be of-type-group attribute.
